@@ -53,6 +53,10 @@
 		.bg-blue {
 			background: #027cb4;
 		}
+		.button {
+			border: 0;
+			background: white;
+		}
 		.hide {
 			display: none;
 		}
@@ -65,7 +69,7 @@
 	<?php
 
 		$con = mysqli_connect('127.0.0.1', 'root', '', 'eco_hack');
-		$query = mysqli_query($con, "SELECT * FROM articles"); 
+		$query = mysqli_query($con, "SELECT * FROM articles WHERE author_id = '{$_SESSION['id']}'"); 
 		$query_count = mysqli_num_rows($query);
 		$query_user = mysqli_query($con, "SELECT * FROM accounts WHERE id = '{$_SESSION['id']}'");
 		$table_count = mysqli_num_rows($query_user);
@@ -95,30 +99,33 @@
 				<?php if ($check == true) {
 					echo '<a href="signout.php" class="link pl-4 pr-4 py-4-1 border-right"><h5>Выход</h5></a>';
 				} ?>
-				
 			</div>
 		</div>
 		
 	</nav>
-
+	<?php 
+		
+		
+	 ?>
 	<div class="col-10 bg-white mx-auto p-5 text-center border">
-		<h4>Все работы</h4><br>
+		<h4>Ваши работы</h4><br>
 		<div class="row">
 			<?php
 				for ($i=0; $i < $query_count; $i++) { 
 				$result = $query->fetch_assoc(); 
 				echo "<div class='col-4 p-3 border'>
-
 							<button class='button underline'>{$result["title"]}</button>
 							<span class='hide'>{$result["text"]}</span>
-							<span>Автор: {$result["author"]}</span>
 					</div>";
 				} 
 			 ?>
 
 		</div>
-
-	</div>
+		<form action="add.php">
+			<button class="btn mx-auto btn-info mt-3">Добавить работу</button>
+		</form>
+		
+	</div> 
 	<div class="col-10 bg-white mx-auto p-5 text-center border">
 		<h4 class="underline">Нужны справочные материалы для работ?</h4>
 		<p>Полезные ссылки:</p>
@@ -126,6 +133,7 @@
 		<a href="https://www.yakutskhistory.net/">История Якутии</a><br>
 		<a href="https://ecologyofrussia.ru/">Экология России</a><br>
 	</div>
+	
 
 	<footer class="p-5 bg-blue text-white d-flex" style="height: 230px;">
 		<a name="foot"></a>
